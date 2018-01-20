@@ -4,7 +4,7 @@ import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.param.ParamMap
 import org.apache.spark.ml.linalg.{Vector, Vectors}
 import org.apache.spark.sql.{Row, SparkSession}
-/**
+/** model and params
   * Created by wangcunxin on 2018/1/20.
   */
 object Eg1 {
@@ -15,6 +15,8 @@ object Eg1 {
       .appName("eg1")
       .master("local[2]")
       .getOrCreate()
+    spark.sparkContext.setLogLevel("WARN")
+
     val training = spark.createDataFrame(Seq(
       (1.0, Vectors.dense(0.0,1.1,0.1)),
       (0.0, Vectors.dense(2.0,1.0,-1.0)),
@@ -38,7 +40,7 @@ object Eg1 {
     val paramMapCombined = paramMap ++ paramMap2
 
     val model2 = lr.fit(training, paramMapCombined)
-    model2.parent.extractParamMap
+    println(model2.parent.extractParamMap)
 
     val test = spark.createDataFrame(Seq(
       (1.0, Vectors.dense(-1.0,1.5,1.3)),
